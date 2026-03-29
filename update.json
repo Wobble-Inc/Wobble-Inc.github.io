@@ -1,11 +1,11 @@
 {
   "appName": "FlimBox",
-  "version": "1.5",
+  "version": "1.5.0",
   "mandatory": false,
   "publishedAt": "2026-03-29",
   "notes": [
     "Prima versione del sistema aggiornamenti"
   ],
-  "downloadUrl": "https://github.com/Wobble-Inc/flimbox-updates/releases/download/v1.5/FlimBox.exe",
-  "sha256": "AF973DDECC7318661F29733938BCA15377863777D5A270DCD83B..."
+  "downloadUrl": "https://github.com/Wobble-Inc/Flimbox-updates/releases/v1.5.0/FlimBox.exe",
+  "sha256": "af973ddecc7318661f29733938bca15377863777d5a270dcd83b2da62b296034"
 }
