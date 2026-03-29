@@ -3,191 +3,221 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>FlimBox - Update Service</title>
+  <title>FlimBox · Update Channel</title>
   <meta
     name="description"
-    content="Canale ufficiale di aggiornamento di FlimBox Desktop. Verifica versioni, note di rilascio e download sicuri tramite GitHub Releases."
+    content="Canale ufficiale di aggiornamento di FlimBox Desktop, software per la gestione flessibile di dati tabellari aziendali e operativi."
   />
   <style>
     :root {
-      --bg-1: #070b16;
-      --bg-2: #0f172a;
-      --surface: rgba(15, 23, 42, 0.58);
-      --surface-strong: rgba(15, 23, 42, 0.78);
-      --border: rgba(255, 255, 255, 0.12);
-      --text: #e5eefc;
-      --muted: #9fb0d0;
-      --primary: #6ea8ff;
-      --primary-2: #7dd3fc;
-      --accent: #9b8cff;
-      --shadow: 0 20px 60px rgba(0, 0, 0, 0.35);
+      --bg: #060816;
+      --bg-soft: #0d1226;
+      --panel: rgba(13, 18, 38, 0.72);
+      --panel-2: rgba(19, 27, 52, 0.62);
+      --line: rgba(255, 255, 255, 0.10);
+      --line-strong: rgba(255, 255, 255, 0.18);
+      --text: #eef3ff;
+      --muted: #9aa7c7;
+      --blue: #5da8ff;
+      --cyan: #6ee7f9;
+      --violet: #8d7dff;
+      --green: #5eead4;
+      --shadow: 0 24px 80px rgba(0, 0, 0, 0.35);
       --radius-xl: 28px;
-      --radius-lg: 20px;
-      --radius-md: 14px;
-      --max-width: 1180px;
+      --radius-lg: 22px;
+      --radius-md: 16px;
+      --max: 1180px;
     }
 
     * {
       box-sizing: border-box;
     }
 
-    html {
-      scroll-behavior: smooth;
+    html, body {
+      margin: 0;
+      padding: 0;
+      min-height: 100%;
     }
 
     body {
-      margin: 0;
-      min-height: 100vh;
       font-family: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont,
         "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
       color: var(--text);
       background:
-        radial-gradient(circle at 15% 20%, rgba(59, 130, 246, 0.22), transparent 28%),
-        radial-gradient(circle at 85% 18%, rgba(125, 211, 252, 0.18), transparent 26%),
-        radial-gradient(circle at 50% 80%, rgba(139, 92, 246, 0.18), transparent 30%),
-        linear-gradient(160deg, var(--bg-1) 0%, #091120 38%, var(--bg-2) 100%);
+        radial-gradient(circle at top left, rgba(93, 168, 255, 0.16), transparent 28%),
+        radial-gradient(circle at top right, rgba(141, 125, 255, 0.16), transparent 24%),
+        radial-gradient(circle at bottom center, rgba(110, 231, 249, 0.10), transparent 26%),
+        linear-gradient(180deg, #050713 0%, #090d1d 45%, #060816 100%);
       overflow-x: hidden;
     }
 
-    body::before,
-    body::after {
-      content: "";
+    .bg-grid {
       position: fixed;
-      inset: auto;
-      width: 420px;
-      height: 420px;
-      border-radius: 50%;
-      filter: blur(80px);
-      opacity: 0.3;
+      inset: 0;
       pointer-events: none;
-      z-index: 0;
+      opacity: 0.16;
+      background-image:
+        linear-gradient(rgba(255,255,255,0.04) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(255,255,255,0.04) 1px, transparent 1px);
+      background-size: 36px 36px;
+      mask-image: radial-gradient(circle at center, black 50%, transparent 100%);
+      -webkit-mask-image: radial-gradient(circle at center, black 50%, transparent 100%);
     }
 
-    body::before {
-      top: -120px;
-      left: -90px;
-      background: linear-gradient(135deg, #3b82f6, #60a5fa);
-    }
-
-    body::after {
-      right: -100px;
-      bottom: -120px;
-      background: linear-gradient(135deg, #8b5cf6, #38bdf8);
-    }
-
-    .page {
+    .container {
+      width: min(calc(100% - 32px), var(--max));
+      margin: 0 auto;
       position: relative;
       z-index: 1;
-      width: min(calc(100% - 32px), var(--max-width));
-      margin: 0 auto;
-      padding: 28px 0 24px;
     }
 
-    .hero-shell {
-      position: relative;
-      margin-top: 16px;
-      border: 1px solid var(--border);
-      background: linear-gradient(
-        180deg,
-        rgba(255, 255, 255, 0.08),
-        rgba(255, 255, 255, 0.03)
-      );
-      box-shadow: var(--shadow);
-      backdrop-filter: blur(22px);
-      -webkit-backdrop-filter: blur(22px);
-      border-radius: var(--radius-xl);
-      overflow: hidden;
-      isolation: isolate;
+    .topbar {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 16px;
+      padding: 24px 0 10px;
     }
 
-    .hero-shell::before {
-      content: "";
-      position: absolute;
-      inset: 0;
+    .brand {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      color: var(--text);
+      text-decoration: none;
+      font-weight: 700;
+      letter-spacing: -0.02em;
+    }
+
+    .brand-mark {
+      width: 40px;
+      height: 40px;
+      border-radius: 14px;
+      border: 1px solid var(--line);
       background:
-        linear-gradient(135deg, rgba(110, 168, 255, 0.12), transparent 30%),
-        linear-gradient(315deg, rgba(155, 140, 255, 0.14), transparent 34%);
-      z-index: -1;
+        linear-gradient(135deg, rgba(93, 168, 255, 0.28), rgba(141, 125, 255, 0.26)),
+        rgba(255,255,255,0.04);
+      display: grid;
+      place-items: center;
+      box-shadow: var(--shadow);
+      backdrop-filter: blur(18px);
+      -webkit-backdrop-filter: blur(18px);
+      font-weight: 800;
     }
 
-    .hero {
-      padding: 88px 32px 72px;
-      text-align: center;
-    }
-
-    .badge {
+    .status-pill {
       display: inline-flex;
       align-items: center;
       gap: 10px;
-      padding: 10px 16px;
+      padding: 10px 14px;
       border-radius: 999px;
-      border: 1px solid rgba(255, 255, 255, 0.14);
-      background: rgba(255, 255, 255, 0.06);
-      color: #d9e7ff;
+      border: 1px solid var(--line);
+      background: rgba(255,255,255,0.04);
+      color: #d7e5ff;
       font-size: 0.92rem;
       font-weight: 600;
-      letter-spacing: 0.01em;
-      backdrop-filter: blur(16px);
-      -webkit-backdrop-filter: blur(16px);
-      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.18);
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
     }
 
-    .badge::before {
+    .status-pill::before {
       content: "";
-      width: 10px;
-      height: 10px;
+      width: 9px;
+      height: 9px;
       border-radius: 50%;
-      background: linear-gradient(135deg, var(--primary-2), var(--accent));
-      box-shadow: 0 0 16px rgba(125, 211, 252, 0.7);
-      flex: 0 0 10px;
+      background: linear-gradient(135deg, var(--green), var(--cyan));
+      box-shadow: 0 0 16px rgba(94, 234, 212, 0.6);
+    }
+
+    .hero {
+      display: grid;
+      grid-template-columns: 1.1fr 0.9fr;
+      gap: 24px;
+      align-items: stretch;
+      padding: 26px 0 18px;
+    }
+
+    .hero-main,
+    .hero-side,
+    .feature,
+    .footer-panel {
+      border: 1px solid var(--line);
+      background: linear-gradient(180deg, rgba(255,255,255,0.06), rgba(255,255,255,0.03));
+      box-shadow: var(--shadow);
+      backdrop-filter: blur(20px);
+      -webkit-backdrop-filter: blur(20px);
+    }
+
+    .hero-main {
+      border-radius: var(--radius-xl);
+      padding: 34px;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .hero-main::before {
+      content: "";
+      position: absolute;
+      width: 360px;
+      height: 360px;
+      top: -180px;
+      right: -100px;
+      border-radius: 50%;
+      background: radial-gradient(circle, rgba(93, 168, 255, 0.24), transparent 65%);
+      pointer-events: none;
+    }
+
+    .hero-label {
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+      padding: 10px 14px;
+      border-radius: 999px;
+      font-size: 0.88rem;
+      color: #d7e3ff;
+      background: rgba(255,255,255,0.05);
+      border: 1px solid var(--line);
+      margin-bottom: 18px;
     }
 
     h1 {
-      margin: 22px 0 14px;
-      font-size: clamp(3rem, 8vw, 6.2rem);
-      line-height: 0.95;
-      letter-spacing: -0.04em;
-      font-weight: 800;
-      text-wrap: balance;
+      margin: 0;
+      font-size: clamp(3rem, 7vw, 5.8rem);
+      line-height: 0.94;
+      letter-spacing: -0.05em;
+      font-weight: 850;
     }
 
     .subtitle {
-      width: min(760px, 100%);
-      margin: 0 auto;
-      font-size: clamp(1.05rem, 2.1vw, 1.3rem);
-      line-height: 1.7;
+      margin: 18px 0 0;
+      max-width: 760px;
       color: var(--muted);
-      text-wrap: balance;
+      font-size: clamp(1.02rem, 2vw, 1.2rem);
+      line-height: 1.8;
     }
 
     .subtitle strong {
       color: var(--text);
-      font-weight: 700;
     }
 
     .actions {
       display: flex;
-      justify-content: center;
       flex-wrap: wrap;
       gap: 14px;
-      margin-top: 34px;
+      margin-top: 28px;
     }
 
     .btn {
       display: inline-flex;
       align-items: center;
       justify-content: center;
-      gap: 10px;
       min-width: 190px;
-      padding: 14px 22px;
+      padding: 14px 20px;
       border-radius: 14px;
       text-decoration: none;
       font-weight: 700;
-      font-size: 0.98rem;
-      transition: transform 0.22s ease, box-shadow 0.22s ease, border-color 0.22s ease,
-        background 0.22s ease;
+      transition: transform 0.2s ease, border-color 0.2s ease, background 0.2s ease;
       border: 1px solid transparent;
-      will-change: transform;
     }
 
     .btn:hover {
@@ -195,167 +225,163 @@
     }
 
     .btn-primary {
-      color: #06101f;
-      background: linear-gradient(135deg, var(--primary-2), var(--primary));
-      box-shadow: 0 14px 30px rgba(59, 130, 246, 0.28);
+      color: #061120;
+      background: linear-gradient(135deg, var(--cyan), var(--blue));
+      box-shadow: 0 14px 34px rgba(93, 168, 255, 0.28);
     }
 
     .btn-secondary {
       color: var(--text);
-      background: rgba(255, 255, 255, 0.05);
-      border-color: rgba(255, 255, 255, 0.12);
-      box-shadow: 0 14px 30px rgba(0, 0, 0, 0.18);
-      backdrop-filter: blur(12px);
-      -webkit-backdrop-filter: blur(12px);
+      background: rgba(255,255,255,0.05);
+      border-color: var(--line);
     }
 
     .btn-secondary:hover {
-      border-color: rgba(255, 255, 255, 0.22);
-      background: rgba(255, 255, 255, 0.08);
+      background: rgba(255,255,255,0.08);
+      border-color: var(--line-strong);
     }
 
-    .overview {
-      padding: 0 32px 38px;
+    .hero-side {
+      border-radius: var(--radius-xl);
+      padding: 24px;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      background:
+        linear-gradient(180deg, rgba(16,24,48,0.82), rgba(10,14,30,0.74));
     }
 
-    .overview-panel {
-      border: 1px solid rgba(255, 255, 255, 0.1);
-      border-radius: 22px;
-      background: rgba(6, 12, 25, 0.46);
-      backdrop-filter: blur(16px);
-      -webkit-backdrop-filter: blur(16px);
-      padding: 22px 22px;
-      color: var(--muted);
-      line-height: 1.75;
-      box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.03);
+    .mini-card {
+      border: 1px solid var(--line);
+      border-radius: 18px;
+      background: var(--panel-2);
+      padding: 18px;
+      margin-bottom: 14px;
     }
 
-    .overview-panel strong {
+    .mini-card:last-child {
+      margin-bottom: 0;
+    }
+
+    .mini-kicker {
+      color: var(--cyan);
+      font-size: 0.78rem;
+      text-transform: uppercase;
+      letter-spacing: 0.12em;
+      margin-bottom: 8px;
+      font-weight: 700;
+    }
+
+    .mini-title {
+      margin: 0 0 8px;
+      font-size: 1rem;
+      font-weight: 700;
       color: var(--text);
     }
 
-    .cards {
-      display: grid;
-      grid-template-columns: repeat(3, minmax(0, 1fr));
-      gap: 20px;
-      margin-top: 28px;
+    .mini-text {
+      margin: 0;
+      color: var(--muted);
+      line-height: 1.7;
+      font-size: 0.95rem;
     }
 
-    .card {
-      position: relative;
-      padding: 26px 22px;
+    .stats {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 18px;
+      margin: 10px 0 28px;
+    }
+
+    .feature {
       border-radius: var(--radius-lg);
-      border: 1px solid rgba(255, 255, 255, 0.1);
-      background: linear-gradient(
-        180deg,
-        rgba(255, 255, 255, 0.07),
-        rgba(255, 255, 255, 0.03)
-      );
-      backdrop-filter: blur(18px);
-      -webkit-backdrop-filter: blur(18px);
-      box-shadow: 0 16px 40px rgba(0, 0, 0, 0.22);
+      padding: 24px;
+      position: relative;
       overflow: hidden;
     }
 
-    .card::before {
+    .feature::after {
       content: "";
       position: absolute;
-      top: -60px;
-      right: -50px;
-      width: 140px;
-      height: 140px;
+      inset: auto -20px -30px auto;
+      width: 120px;
+      height: 120px;
       border-radius: 50%;
-      background: radial-gradient(circle, rgba(110, 168, 255, 0.18), transparent 65%);
+      background: radial-gradient(circle, rgba(141, 125, 255, 0.16), transparent 65%);
       pointer-events: none;
     }
 
-    .card-icon {
-      width: 48px;
-      height: 48px;
-      display: inline-grid;
-      place-items: center;
-      border-radius: 14px;
-      margin-bottom: 18px;
-      background: linear-gradient(135deg, rgba(110, 168, 255, 0.2), rgba(155, 140, 255, 0.18));
-      border: 1px solid rgba(255, 255, 255, 0.1);
-      color: #dce9ff;
-      font-size: 1.15rem;
+    .feature-number {
+      display: inline-flex;
+      width: 42px;
+      height: 42px;
+      border-radius: 12px;
+      align-items: center;
+      justify-content: center;
+      background: linear-gradient(135deg, rgba(93,168,255,0.22), rgba(141,125,255,0.22));
+      border: 1px solid var(--line);
+      color: #dce8ff;
       font-weight: 800;
+      margin-bottom: 16px;
     }
 
-    .card h3 {
+    .feature h3 {
       margin: 0 0 10px;
-      font-size: 1.1rem;
-      line-height: 1.25;
-      color: var(--text);
+      font-size: 1.08rem;
+      letter-spacing: -0.02em;
     }
 
-    .card p {
+    .feature p {
       margin: 0;
       color: var(--muted);
-      line-height: 1.72;
-      font-size: 0.98rem;
+      line-height: 1.75;
+      font-size: 0.97rem;
     }
 
-    footer {
+    .footer-panel {
+      border-radius: 20px;
+      padding: 18px 20px;
+      margin: 4px 0 24px;
       text-align: center;
-      color: #8ca0c3;
+      color: #90a2c5;
       font-size: 0.94rem;
-      padding: 28px 16px 8px;
     }
 
-    .soft-line {
-      width: min(160px, 32%);
-      height: 1px;
-      margin: 0 auto 20px;
-      background: linear-gradient(
-        90deg,
-        transparent,
-        rgba(255, 255, 255, 0.22),
-        transparent
-      );
+    .footer-panel strong {
+      color: #dbe7ff;
     }
 
-    @media (max-width: 960px) {
-      .cards {
+    @media (max-width: 980px) {
+      .hero {
         grid-template-columns: 1fr;
       }
 
-      .hero {
-        padding: 72px 24px 56px;
-      }
-
-      .overview {
-        padding: 0 24px 28px;
+      .stats {
+        grid-template-columns: 1fr;
       }
     }
 
     @media (max-width: 640px) {
-      .page {
-        width: min(calc(100% - 20px), var(--max-width));
-        padding-top: 14px;
+      .container {
+        width: min(calc(100% - 20px), var(--max));
       }
 
-      .hero-shell {
-        border-radius: 22px;
+      .topbar {
+        flex-direction: column;
+        align-items: flex-start;
       }
 
-      .hero {
-        padding: 56px 18px 44px;
+      .hero-main,
+      .hero-side,
+      .feature,
+      .footer-panel {
+        border-radius: 20px;
       }
 
-      .overview {
-        padding: 0 18px 22px;
-      }
-
-      .overview-panel,
-      .card {
-        border-radius: 18px;
-      }
-
-      .badge {
-        font-size: 0.84rem;
-        padding: 9px 13px;
+      .hero-main,
+      .hero-side,
+      .feature {
+        padding: 20px;
       }
 
       .actions {
@@ -365,25 +391,33 @@
       .btn {
         width: 100%;
       }
-
-      h1 {
-        letter-spacing: -0.05em;
-      }
     }
   </style>
 </head>
 <body>
-  <main class="page">
-    <section class="hero-shell">
-      <div class="hero">
-        <div class="badge">Wobble Inc · Update Service</div>
+  <div class="bg-grid"></div>
+
+  <div class="container">
+    <header class="topbar">
+      <a class="brand" href="#">
+        <span class="brand-mark">F</span>
+        <span>FlimBox</span>
+      </a>
+
+      <div class="status-pill">Wobble Inc · Update Service</div>
+    </header>
+
+    <section class="hero">
+      <div class="hero-main">
+        <div class="hero-label">Canale ufficiale aggiornamenti desktop</div>
 
         <h1>FlimBox</h1>
 
         <p class="subtitle">
-          Il canale ufficiale di aggiornamento di <strong>FlimBox Desktop</strong>.
-          Questo sito supporta l’app Windows nella verifica delle nuove versioni,
-          nella lettura delle note di rilascio e nel download sicuro dei setup.
+          Il servizio aggiornamenti di <strong>FlimBox Desktop</strong>, software pensato
+          per la gestione flessibile di dati tabellari aziendali, inventariali e operativi.
+          Questa pagina consente all’app Windows di verificare nuove versioni online,
+          leggere le note di rilascio e scaricare i setup distribuiti in modo ordinato e sicuro.
         </p>
 
         <div class="actions">
@@ -399,54 +433,68 @@
         </div>
       </div>
 
-      <div class="overview">
-        <div class="overview-panel">
-          <strong>FlimBox</strong> è un’app desktop e questa pagina funge da
-          <strong>update channel</strong> ufficiale. L’app controlla online la
-          disponibilità di nuove versioni e distribuisce gli aggiornamenti tramite
-          <strong>GitHub Releases</strong>. Il file <strong>update.json</strong>
-          contiene le informazioni essenziali come versione disponibile, note di rilascio
-          e link al download del setup.
+      <aside class="hero-side">
+        <div class="mini-card">
+          <div class="mini-kicker">Desktop software</div>
+          <h2 class="mini-title">Gestione dati aziendali</h2>
+          <p class="mini-text">
+            FlimBox è un’app desktop pensata per creare, organizzare e gestire tabelle
+            personalizzate in contesto locale, con un approccio semplice e professionale.
+          </p>
         </div>
 
-        <div class="cards">
-          <article class="card">
-            <div class="card-icon">01</div>
-            <h3>Aggiornamenti automatici</h3>
-            <p>
-              L’app desktop verifica periodicamente la presenza di nuove versioni
-              online, così da mantenere FlimBox aggiornato in modo semplice,
-              rapido e affidabile.
-            </p>
-          </article>
-
-          <article class="card">
-            <div class="card-icon">02</div>
-            <h3>Download sicuro con SHA-256</h3>
-            <p>
-              I pacchetti vengono distribuiti tramite GitHub Releases e possono
-              essere verificati con hash SHA-256, per offrire maggiore integrità
-              e sicurezza durante il download.
-            </p>
-          </article>
-
-          <article class="card">
-            <div class="card-icon">03</div>
-            <h3>Configurazione semplice tramite update.json</h3>
-            <p>
-              Il file update.json espone versione, note di rilascio e link di
-              download in modo chiaro, rendendo il sistema di aggiornamento
-              facile da integrare e da mantenere.
-            </p>
-          </article>
+        <div class="mini-card">
+          <div class="mini-kicker">Update flow</div>
+          <h2 class="mini-title">Controllo versione centralizzato</h2>
+          <p class="mini-text">
+            L’app controlla la disponibilità di nuove release online e utilizza
+            <strong>update.json</strong> per leggere versione, note di rilascio e link di download.
+          </p>
         </div>
-      </div>
+
+        <div class="mini-card">
+          <div class="mini-kicker">Distribution</div>
+          <h2 class="mini-title">GitHub Releases</h2>
+          <p class="mini-text">
+            I pacchetti di aggiornamento vengono distribuiti tramite GitHub Releases,
+            così da mantenere il processo trasparente, affidabile e facilmente verificabile.
+          </p>
+        </div>
+      </aside>
     </section>
 
-    <footer>
-      <div class="soft-line"></div>
-      © 2026 Wobble Inc · FlimBox Desktop Update Channel
+    <section class="stats">
+      <article class="feature">
+        <div class="feature-number">01</div>
+        <h3>Aggiornamenti automatici</h3>
+        <p>
+          FlimBox può verificare online la presenza di nuove versioni e guidare
+          l’utente verso l’installazione del setup più recente in modo lineare.
+        </p>
+      </article>
+
+      <article class="feature">
+        <div class="feature-number">02</div>
+        <h3>Download sicuro con SHA-256</h3>
+        <p>
+          I file distribuiti possono essere verificati tramite hash SHA-256,
+          offrendo maggiore integrità nel processo di aggiornamento dell’app desktop.
+        </p>
+      </article>
+
+      <article class="feature">
+        <div class="feature-number">03</div>
+        <h3>Configurazione tramite update.json</h3>
+        <p>
+          Il file update.json centralizza le informazioni essenziali:
+          versione disponibile, note di rilascio e collegamenti ai download ufficiali.
+        </p>
+      </article>
+    </section>
+
+    <footer class="footer-panel">
+      <strong>© 2026 Wobble Inc</strong> · FlimBox Desktop Update Channel
     </footer>
-  </main>
+  </div>
 </body>
 </html>
